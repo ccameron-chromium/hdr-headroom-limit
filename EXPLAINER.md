@@ -21,8 +21,9 @@ dynamic range (SDR).
 ## HDR Content
 
 Content is considered high dynamic range (HDR) if it contains colors that
-are intended to be rendered brighter than SDR white. Existing HDR content
-includes:
+are intended to be rendered brighter than SDR white.
+
+Existing HDR content includes:
 
 * Videos that use the Perceptual Quantizer (PQ) and Hybrid Log-Gamma (HLG)
   transfer functions as described in
@@ -32,42 +33,44 @@ includes:
 * Images that include a
   [HDR Gain Map](https://helpx.adobe.com/si/camera-raw/using/gain-map.html).
 
+Future HDR content could include HTML canvas and CSS colors.
+
 ## Tonemapping Content to a Display
 
 When HDR content is rendered to a display, it is transformed by a tone mapping
-operation to produce a tone mapped image that fits within the display's HDR
-headroom.
+operation to produce an image that fits within the display's HDR headroom.
 
 A tone mapping operation depends on the content being displayed. Examples of
 tone mapping algorithms may be found in:
-[ITU-R BT.2408 Annex 5](https://www.itu.int/pub/R-REP-BT.2408),
-[ITU-R BT.2446-1, Section 4.1](https://www.itu.int/pub/R-REP-BT.2446),
-[SMPTE ST 2094, Annex B](https://ieeexplore.ieee.org/document/9095450), and
-[Hdr Gain Map](https://helpx.adobe.com/si/camera-raw/using/gain-map.html).
+* [ITU-R BT.2408 Annex 5](https://www.itu.int/pub/R-REP-BT.2408)
+* [ITU-R BT.2446-1, Section 4.1](https://www.itu.int/pub/R-REP-BT.2446)
+* [SMPTE ST 2094, Annex B](https://ieeexplore.ieee.org/document/9095450)
+* [Hdr Gain Map](https://helpx.adobe.com/si/camera-raw/using/gain-map.html)
 
-These tone mapping operations are parameterized by the target display's HDR
-headroom.
+These tone mapping operations are parameterized a target HDR headroom.
 
 ## Limiting Tonemapped HDR headroom
 
-By default, HDR content is tone mapped to the output display's full HDR
-headroom.
+By default, HDR content is tone mapped using output display's full HDR headroom
+as the target HDR headroom parameter.
 
 In this proposal, we introduce a CSS property that specifies a maximum HDR
-headroom to use during tone mapping. This has the effect of limiting how
-bright HDR content can appear.
+headroom paramter value to use during tone mapping. This has the effect of
+limiting how bright HDR content can appear.
 
 ## Use Cases
 
 Several applications that show galleries of images and videos have requested
 this feature. They wish for the contents of the gallery to have a nearly uniform
-brightness. Some applications have requested to enforce that all images be
-strictly SDR, while some applications have requested that HDR images exceed
-SDR, but only slightly.
+brightness.
+
+Some applications have requested to enforce that all images be strictly SDR,
+while some applications have requested that HDR images exceed SDR, but only
+slightly.
 
 Applications have also requested the ability to animate the increasing of this
 maximum when hovering an image, and to animate the complete removal of this
-maximum when focusing on an image.
+limit when focusing on an image.
 
 ## API changes
 
