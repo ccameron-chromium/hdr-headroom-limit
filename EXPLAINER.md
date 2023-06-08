@@ -55,7 +55,7 @@ By default, HDR content is tone mapped using output display's full HDR headroom
 as the target HDR headroom parameter.
 
 In this proposal, we introduce a CSS property that specifies a maximum HDR
-headroom paramter value to use during tone mapping. This has the effect of
+headroom parameter value to use during tone mapping. This has the effect of
 limiting how bright HDR content can appear.
 
 ## Use Cases
@@ -71,6 +71,11 @@ slightly.
 Applications have also requested the ability to animate the increasing of this
 maximum when hovering an image, and to animate the complete removal of this
 limit when focusing on an image.
+
+## Privacy and Security
+
+The precise HDR headroom value of a display is a fingerprinting vector, and
+should not be exposed.
 
 ## API changes
 
@@ -112,4 +117,3 @@ limit.
     <img src='TestImage1.avif' style='max-hdr-headroom:100%;'/>
   </p>
 ```
-
