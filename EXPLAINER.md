@@ -18,7 +18,7 @@ of SDR white.
 A display which is not HDR (has an HDR headroom of 1) is called standard
 dynamic range (SDR).
 
-## HDR Content
+### HDR Content
 
 Content is considered high dynamic range (HDR) if it contains colors that
 are intended to be rendered brighter than SDR white.
@@ -35,7 +35,7 @@ Existing HDR content includes:
 
 Future HDR content could include HTML canvas and CSS colors.
 
-## Tonemapping Content to a Display
+### Tonemapping Content to a Display
 
 When HDR content is rendered to a display, it is transformed by a tone mapping
 operation to produce an image that fits within the display's HDR headroom.
@@ -49,46 +49,62 @@ tone mapping algorithms may be found in:
 
 These tone mapping operations are parameterized a target HDR headroom.
 
-## Limiting Tonemapped HDR headroom
-
-By default, HDR content is tone mapped using output display's full HDR headroom
-as the target HDR headroom parameter.
-
-In this proposal, we introduce a CSS property that specifies a maximum HDR
-headroom parameter value to use during tone mapping. This has the effect of
-limiting how bright HDR content can appear.
-
 ## Use Cases
 
 Several applications that show galleries of images and videos have requested
-this feature. They wish for the contents of the gallery to have a nearly uniform
-brightness.
+an ability to reduce the HDR headroom in their gallery view, so that all
+contents of the gallery have a nearly uniform brightness.
 
 Some applications have requested to enforce that all images be strictly SDR,
 while some applications have requested that HDR images exceed SDR, but only
 slightly.
 
-Applications have also requested the ability to animate the increasing of this
-maximum when hovering an image, and to animate the complete removal of this
-limit when focusing on an image.
+Applications have requested the ability to remove this HDR headroom limit when
+hovering the image, or when an image is selected for viewing. When the
+HDR headroom limit for an element is changed, applications have requested that
+the transition be smoothly animated, to avoid a jarring "pop" in brightness.
+
+## Goal
+
+The goal of this proposal is to provide a mechansim through which an application
+may limit the maximum brightness of all HDR content (including images, videos,
+and in the future HTML canvases and CSS colors).
+
+## Non-goals
+
+A non-goal of this proposal is to provide a mechanism through which a maximum
+brightness of HDR content can be enforced on child elements of a given element.
 
 ## Privacy and Security
 
 The precise HDR headroom value of a display is a fingerprinting vector, and
 should not be exposed.
 
-## API changes
+## API Proposal
 
-Add a new CSS property, `max-hdr-headroom`, which specifies the maximum HDR
-headroom.
+Add a new CSS data type, `named-dynamic-range-limit`, which specifies a qualitative
+maximum HDR headroom its values are:
 
-This property can be set to:
-* A `number` which represents a specific fixed headroom. The value must be
-  greater than 1.0.
-* A `percentage`, which represents a percentage of the display's current HDR
-  headroom.
+* `standard`, which indicates that the content should render as SDR
+  (equivalently, with an HDR headroom of 1).
+* `high`, which indicates that the full HDR headroom available to the display
+  should be used.
+* `high-attenuated`, which indicates that the content should render with a an HDR
+  headroom lower than the maximum, but slightly higher than SDR. The precise
+  underlying HDR headroom value that this corresponds is decided by the user
+  agent, and may depend on the capabilities of the display and ambient viewing
+  conditions.
 
-This property has a default value of `100%` indicating that the full display HDR
+Add a few CSS functional, `mix-dynamic-range-limit()`, which allows for
+interpolation between two `named-dynamic-range-limit` values by a specified
+percent. This is required for smooth animation between `named-dynamic-range-limit`
+values.
+
+Add a new CSS property, `dynamic-range-limit`, which specifies the maximum HDR
+headroom to be used for rendering. This can be set to a `named-dynamic-range-limit`
+or the `mix-dynamic-range-limit()` functional.
+
+This property has a default value of `high` indicating that the full display HDR
 headroom is to be used.
 
 This property is animatable. Animating of this property has been requested, e.g,
@@ -97,12 +113,59 @@ when hovering over or selecting an image.
 This property is inherited. It is useful to specify a headroom for a gallery's
 container.
 
+### Note on related APIs.
+
+Note that there exists the
+[`dynamic-range` CSS media query](https://www.w3.org/TR/mediaqueries-5/#dynamic-range),
+which can indicate values of `standard` and `high`.
+
+## API Alternatives and Extensions
+
+There are several other APIs that have been considered.
+
+### Specifying an absolute HDR headroom value
+
+Allow setting `dynamic-range-limit` to a number representing an absolute HDR
+headroom value.
+
+A deficiency of this model is that there is no way to specify an equivalent
+of `high`. Doing so would require knowing the output device's HDR headroom,
+which is a fingerprinting vector.
+
+This model also does not address the requests from this feature. There have
+been no requests for explicit control over the precise HDR headroom value,
+there has been concern expressed about having to tune parameter to achieve
+a `high-attenuated` effect, and there has been concern about a lack of uniformity
+of different applications arriving at different tunings to achieve the
+`high-attenuated` effect.
+
+### Specifying an relative HDR headroom value
+
+Allow setting `dynamic-range-limit` to a percent representing a percentage of
+the output display's HDR headroom.
+
+While this model does allow specifying an equialent of `standard` and `high`,
+it suffers similar issues to the absolute model with respect to achieving
+a `high-attenuated` effect.
+
+### Discussion
+
+The suggested API does not exclude the possibility of adding the above
+absolute and relative values for `dynamic-range-limit` if they prove to be
+useful additions.
+
+As mentioned in the Privacy and Security section, the precise HDR headroom
+value of a display cannot be exposed. There is a risk of exposing that value
+if the named, absolute, and relative HDR headroom values can be correlated.
+To avoid this, all interpolation between HDR headroom values must return the
+`mix-dynamic-range-limit()` functional.
+
 ## Example
 
 The following shows an example gallery:
 
 ```html
-  <p style='max-hdr-headroom:1.5;'>
+  <p style='dynamic-range-limit:high-attenuated;'>
     <img src='TestImage0.avif'/>
     <img src='TestImage1.avif'/>
   </p>
@@ -112,8 +175,9 @@ The following shows the same gallery where the second image has removed its
 limit.
 
 ```html
-  <p style='max-hdr-headroom:1.5;'>
+  <p style='dynamic-range-limit:high-attenuated;'>
     <img src='TestImage0.avif'/>
-    <img src='TestImage1.avif' style='max-hdr-headroom:100%;'/>
+    <img src='TestImage1.avif' style='dynamic-range-limit:high;'/>
   </p>
 ```
+
