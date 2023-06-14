@@ -1,4 +1,4 @@
-# Maximum HDR Headroom CSS Property
+# Dynamic Range Limit CSS Property
 
 ## Introduction
 
@@ -162,7 +162,7 @@ To avoid this, all interpolation between HDR headroom values must return the
 
 ## Example
 
-The following shows an example gallery:
+The following shows an example gallery where content can be brighter than SDR, but will not necessarily use the full HDR range.
 
 ```html
   <p style='dynamic-range-limit:high-attenuated;'>
