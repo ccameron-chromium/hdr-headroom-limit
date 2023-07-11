@@ -96,7 +96,7 @@ maximum HDR headroom its values are:
   agent, and may depend on the capabilities of the display and ambient viewing
   conditions.
 
-Add a few CSS functional, `mix-dynamic-range-limit()` which allows for
+Add a new CSS functional, `mix-dynamic-range-limit()` which allows for
 interpolation between two `named-dynamic-range-limit` values, by a specified
 percent. This is required for smooth animation between `named-dynamic-range-limit`
 values.
@@ -142,14 +142,20 @@ a `constrained-high` effect, and there has been concern about a lack of uniformi
 of different applications arriving at different tunings to achieve the
 `constrained-high` effect.
 
-### Specifying an relative HDR headroom value
+### Specifying a percent HDR headroom value
 
 Allow setting `dynamic-range-limit` to a percent representing a percentage of
-the output display's HDR headroom.
+the output display's current HDR headroom. In this model, `0%` would be the same
+as `standard`, and `100%` would be the same as `high`.
 
-While this model does allow specifying an equialent of `standard` and `high`,
-it suffers similar issues to the absolute model with respect to achieving
-a `constrained-high` effect.
+While this addresses some of issues with the absolute HDR headroom model
+discussed in the previous section, it still suffers the problems of each
+application having to tune the parameter to achieve a `constrained-high`
+effect, the then lack of uniformity across applications.
+
+It is prefeable to leave the interpretation of `constrained-high` up to
+the browser and the operating system, which know more detailed information
+about the display and viewing environment than can be exposed to the web.
 
 ### Discussion
 
