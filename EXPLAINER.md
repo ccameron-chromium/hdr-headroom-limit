@@ -5,6 +5,8 @@
 This proposal introduces a new CSS property that can be used to control the
 maximum brightness of high dynamic range content on the web.
 
+See the related [csswg github issue 9074](https://github.com/w3c/csswg-drafts/issues/9074).
+
 ## Background
 
 ### HDR Display
