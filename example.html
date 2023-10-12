@@ -16,27 +16,55 @@
     dynamic-range-limit: constrained-high;
 }
 
-.gallery img:hover:not(:active) {
+.gallery img:hover {
+    transform: scale(1.25);
+    dynamic-range-limit: high;
+}
+
+.gallery img:active {
     transform: scale(1.25);
     dynamic-range-limit: high;
 }
 </style>
+<script>
+let main = function() {
+  if (`dynamicRangeLimit` in Image01.style) {
+    Status.innerText += ' present';
+    Status.style.color = 'green';
+  } else {
+    Status.innerText += ' absent';
+    Status.style.color = 'red';
+  }
+
+  Image01.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/01.jpg";
+  Image02.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/02.jpg";
+  Image03.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/03.jpg";
+  Image04.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/04.jpg";
+  Image05.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/05.jpg";
+  Image06.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/06.jpg";
+  Image07.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/07.jpg";
+  Image08.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/08.jpg";
+  Image09.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/09.jpg";
+  Image10.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/10.jpg";
+}
+</script>
 </head>
-<body>
+<body onload='main();'>
 <p>CSS property dynamic-range-limit is available in Chrome Canary >= 120.0.6062.0.</p>
 <p>Enable "Experimental Web Platform Features" in chrome://flags to use the feature.</p>
 <p>Images are hosted at: <a href="https://people.csail.mit.edu/ericchan/hdr/jpeg-gain-map.php">https://people.csail.mit.edu/ericchan/hdr/jpeg-gain-map.php</a></p>
+<p id="Status">dynamic-range-limit: </p>
 <div class="gallery">
-  <img id="i01" src="https://people.csail.mit.edu/ericchan/hdr/gain_map_images/01.jpg"/>
-  <img id="i02" src="https://people.csail.mit.edu/ericchan/hdr/gain_map_images/02.jpg"/>
-  <img id="i03" src="https://people.csail.mit.edu/ericchan/hdr/gain_map_images/03.jpg"/>
-  <img id="i04" src="https://people.csail.mit.edu/ericchan/hdr/gain_map_images/04.jpg"/>
-  <img id="i05" src="https://people.csail.mit.edu/ericchan/hdr/gain_map_images/05.jpg"/>
-  <img id="i06" src="https://people.csail.mit.edu/ericchan/hdr/gain_map_images/06.jpg"/>
-  <img id="i07" src="https://people.csail.mit.edu/ericchan/hdr/gain_map_images/07.jpg"/>
-  <img id="i08" src="https://people.csail.mit.edu/ericchan/hdr/gain_map_images/08.jpg"/>
-  <img id="i09" src="https://people.csail.mit.edu/ericchan/hdr/gain_map_images/09.jpg"/>
-  <img id="i10" src="https://people.csail.mit.edu/ericchan/hdr/gain_map_images/10.jpg"/>
+  <img id="Image01">
+  <img id="Image02"/>
+  <img id="Image03"/>
+  <img id="Image04"/>
+  <img id="Image05"/>
+  <img id="Image06"/>
+  <img id="Image07"/>
+  <img id="Image08"/>
+  <img id="Image09"/>
+  <img id="Image10"/>
 </div>
 </body>
 </html>
