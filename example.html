@@ -12,12 +12,12 @@
 .gallery img {
     max-height: 20vh;
     margin: 20px;
-    transition: transform 0.25s, dynamic-range-limit 0.5s;
-    dynamic-range-limit: constrained-high;
+    transition: transform 0.25s, dynamic-range-limit 0.25s;
+    dynamic-range-limit: standard;
 }
 
 .gallery img:hover {
-    transform: scale(1.25);
+    transform: scale(1.15);
     dynamic-range-limit: high;
 }
 
@@ -27,6 +27,13 @@
 }
 </style>
 <script>
+
+let tick = function() {
+  window.requestAnimationFrame(tick);
+  // To verify that the computed value returns dynamic-range-mix.
+  // console.log(window.getComputedStyle(Image01).getPropertyValue('dynamic-range-limit'));
+}
+
 let main = function() {
   if (`dynamicRangeLimit` in Image01.style) {
     Status.innerText += ' present';
@@ -35,6 +42,7 @@ let main = function() {
     Status.innerText += ' absent';
     Status.style.color = 'red';
   }
+  window.requestAnimationFrame(tick);
 
   Image01.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/01.jpg";
   Image02.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/02.jpg";
