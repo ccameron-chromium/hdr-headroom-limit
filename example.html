@@ -10,20 +10,40 @@
 }
 
 .gallery img {
-    max-height: 20vh;
+    max-height: 40vh;
     margin: 20px;
-    transition: transform 0.25s, dynamic-range-limit 0.25s;
+    transition: transform 0.25s, dynamic-range-limit 0.5s;
     dynamic-range-limit: standard;
 }
 
 .gallery img:hover {
-    transform: scale(1.15);
-    dynamic-range-limit: high;
+    transform: scale(1);
+    dynamic-range-limit: no-limit;
 }
 
 .gallery img:active {
     transform: scale(1.25);
-    dynamic-range-limit: high;
+    dynamic-range-limit: no-limit;
+    image-rendering: pixelated;
+}
+
+.gallery video {
+    max-height: 20vh;
+    margin: 20px;
+    transition: transform 0.25s, dynamic-range-limit 0.5s;
+    dynamic-range-limit: standard;
+}
+
+.gallery video:hover {
+    transform: scale(1);
+    dynamic-range-limit: no-limit;
+    image-rendering: pixelated;
+}
+
+.gallery video:active {
+    transform: scale(1.25);
+    dynamic-range-limit: no-limit;
+    image-rendering: pixelated;
 }
 </style>
 <script>
@@ -31,7 +51,7 @@
 let tick = function() {
   window.requestAnimationFrame(tick);
   // To verify that the computed value returns dynamic-range-mix.
-  // console.log(window.getComputedStyle(Image01).getPropertyValue('dynamic-range-limit'));
+  console.log(window.getComputedStyle(Image01).getPropertyValue('dynamic-range-limit'));
 }
 
 let main = function() {
@@ -42,37 +62,15 @@ let main = function() {
     Status.innerText += ' absent';
     Status.style.color = 'red';
   }
-  window.requestAnimationFrame(tick);
-
-  Image01.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/01.jpg";
-  Image02.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/02.jpg";
-  Image03.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/03.jpg";
-  Image04.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/04.jpg";
-  Image05.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/05.jpg";
-  Image06.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/06.jpg";
-  Image07.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/07.jpg";
-  Image08.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/08.jpg";
-  Image09.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/09.jpg";
-  Image10.src = "https://people.csail.mit.edu/ericchan/hdr/gain_map_images/10.jpg";
 }
 </script>
 </head>
 <body onload='main();'>
-<p>CSS property dynamic-range-limit is available in Chrome Canary >= 120.0.6062.0.</p>
-<p>Enable "Experimental Web Platform Features" in chrome://flags to use the feature.</p>
-<p>Images are hosted at: <a href="https://people.csail.mit.edu/ericchan/hdr/jpeg-gain-map.php">https://people.csail.mit.edu/ericchan/hdr/jpeg-gain-map.php</a></p>
+<p>CSS property dynamic-range-limit has shipped!</p>
 <p id="Status">dynamic-range-limit: </p>
 <div class="gallery">
-  <img id="Image01">
-  <img id="Image02"/>
-  <img id="Image03"/>
-  <img id="Image04"/>
-  <img id="Image05"/>
-  <img id="Image06"/>
-  <img id="Image07"/>
-  <img id="Image08"/>
-  <img id="Image09"/>
-  <img id="Image10"/>
+  <img id="Image01" src="gioia-pixel-ultrahdr.jpg"/>
+  <img id="Image02" src="centrale-pixel-ultrahdr.jpg"/>
 </div>
 </body>
 </html>
